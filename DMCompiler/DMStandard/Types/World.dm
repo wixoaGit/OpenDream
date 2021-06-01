@@ -7,7 +7,7 @@
 	var/turf = /turf
 	var/mob = /mob
 
-	var/name = "OpenDream World"
+	var/name
 	var/time
 	var/timeofday
 	var/realtime
@@ -27,7 +27,7 @@
 	var/url
 	var/status
 	var/list/params = null
-	
+
 	var/system_type
 
 	proc/New()
@@ -35,6 +35,6 @@
 
 	proc/Reboot()
 		CRASH("/world.Reboot() is not implemented")
-		
+
 	proc/Repop()
 		CRASH("/world.Repop() will not be implemented")

@@ -121,7 +121,7 @@ namespace OpenDreamRuntime
 
             Map = new DreamMap(this);
             Map.LoadMap(CompiledJson.Maps[0]);
-            
+
             WorldInstance.SpawnProc("New");
         }
 
@@ -177,6 +177,8 @@ namespace OpenDreamRuntime
                 return null;
             }
 
+            compiledJson.SourceFileName = Path.GetFileNameWithoutExtension(path);
+
             return compiledJson;
         }
 
@@ -222,6 +224,17 @@ namespace OpenDreamRuntime
             connection.SendPacket(new PacketInterfaceData(_clientInterface));
             connection.SendPacket(new PacketFullGameState(StateManager.FullState));
 
+            // Set to <world> part of <world>.json unless we define world.name - final fallback to "OpenDream World"
+            String worldName;
+            DreamValue worldInstanceName = WorldInstance.GetVariable("name");
+            if (worldInstanceName != DreamValue.Null) {
+                worldName = worldInstanceName.Stringify();
+            } else if (CompiledJson.SourceFileName != null) {
+                worldName = CompiledJson.SourceFileName;
+            } else {
+                worldName = "OpenDream World";
+            }
+
             DreamThread.Run(this, async (state) => {
                 var client = connection.ClientDreamObject;
                 var newProc = client.GetProc("New");
@@ -229,9 +242,9 @@ namespace OpenDreamRuntime
                 var mob = await state.Call(newProc, client, null, new DreamProcArguments(null));
 
                 if (mob.Value != null) {
-                    connection.SendPacket(new PacketConnectionResult(true, ""));
+                    connection.SendPacket(new PacketConnectionResult(true, "", worldName));
                 } else {
-                    connection.SendPacket(new PacketConnectionResult(false, "The connection was disallowed"));
+                    connection.SendPacket(new PacketConnectionResult(false, "The connection was disallowed", null));
                 }
 
                 return DreamValue.Null;

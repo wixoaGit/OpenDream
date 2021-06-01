@@ -194,12 +194,17 @@ namespace OpenDreamClient.Interface {
         private Window CreateDefaultWindow() {
             Window defaultWindow = CreateWindow(DefaultWindow);
 
+            defaultWindow.Title = "OpenDream World";
             defaultWindow.Closed += OnDefaultWindowClosed;
             defaultWindow.KeyDown += OnDefaultWindowKeyDown;
             defaultWindow.KeyUp += OnDefaultWindowKeyUp;
             defaultWindow.Show();
 
             return defaultWindow;
+        }
+
+        public void SetDefaultWindowTitle(String title) {
+            _defaultWindow.Title = title;
         }
 
         private void OnDefaultWindowClosed(object sender, EventArgs e) {

@@ -111,6 +111,7 @@ namespace OpenDreamClient {
                 Console.WriteLine("Connection was unsuccessful: " + pConnectionResult.ErrorMessage);
                 DisconnectFromServer();
             }
+            Interface.SetDefaultWindowTitle(pConnectionResult.WorldName);
         }
     }
 }
