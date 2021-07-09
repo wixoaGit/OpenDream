@@ -125,6 +125,17 @@ namespace OpenDreamRuntime
             Server.Start(this);
 
             while (!Shutdown) {
+                int tickLength = (int)(100 * WorldInstance.GetVariable("tick_lag").GetValueAsFloat());
+
+                //TODO: sleep_offline = 0
+                if (Server.GetConnectedClientCount() == 0 &&
+                    WorldInstance.GetVariable("sleep_offline").TryGetValueAsInteger(out int val) && val == 1)
+                {
+                    Server.Process();
+                    Thread.Sleep(tickLength);
+                    continue;
+                }
+
                 TickStartTime = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
 
                 _taskScheduler.Process();
@@ -138,10 +149,10 @@ namespace OpenDreamRuntime
                 TickCount++;
 
                 int elapsedTime = (int)(new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds() - TickStartTime);
-                int tickLength = (int)(100 * WorldInstance.GetVariable("tick_lag").GetValueAsFloat());
                 int timeToSleep = tickLength - elapsedTime;
                 WorldInstance.SetVariable("cpu", new DreamValue((float)elapsedTime / tickLength * 100));
                 if (timeToSleep > 0) Thread.Sleep(timeToSleep);
+                Console.WriteLine($"Tick: {TickCount}, Connections: {Server.GetConnectedClientCount()}");
             }
         }
 

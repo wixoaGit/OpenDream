@@ -55,5 +55,16 @@ namespace OpenDreamRuntime {
 
             return null;
         }
+
+        public int GetConnectedClientCount()
+        {
+            var clients = 0;
+
+            for (var i = 0; i < Connections.Count; i++) {
+                if (Connections[i].ClientDreamObject != null) clients++;
+            }
+
+            return clients;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿/world
+/world
 	var/list/contents = list()
 
 	var/log = null
@@ -15,6 +15,7 @@
 	var/cpu = 0
 	var/fps = null
 	var/tick_usage
+	var/sleep_offline = 0
 
 	var/maxx = 0
 	var/maxy = 0
