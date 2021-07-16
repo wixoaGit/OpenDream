@@ -53,9 +53,9 @@ namespace OpenDreamRuntime.Tests
             var info = new ProcessStartInfo {
                 FileName = "DMCompiler.exe",
                 Arguments = "DMProject\\environment.dme",
-                RedirectStandardInput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
+                //RedirectStandardInput = true,
+                //RedirectStandardError = true,
+                UseShellExecute = true,
             };
 
             var process = new Process { StartInfo = info };

@@ -24,6 +24,8 @@ jobs:
       run: dotnet build main/OpenDream.sln --configuration Release --no-restore /m
     - name: Compile TestGame
       run: main\DMCompiler\bin\Release\net5.0\DMCompiler.exe main\TestGame\environment.dme
+    - name: Run Unit Tests
+      run: dotnet test --no-build main\OpenDreamRuntime.Tests\OpenDreamRuntime.Tests.csproj --configuration Release
     - name: Checkout Modified /tg/station
       uses: actions/checkout@v2
       with:
